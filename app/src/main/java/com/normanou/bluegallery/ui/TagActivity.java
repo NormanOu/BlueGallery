@@ -105,7 +105,7 @@ public class TagActivity extends AppCompatActivity {
                     }
                 }
 
-                mAdapter.setFocusPosition(focusPos);
+                mAdapter.updateFocusView(mListView, focusPos);
             }
         });
 

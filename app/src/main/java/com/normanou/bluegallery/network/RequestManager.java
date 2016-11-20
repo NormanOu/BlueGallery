@@ -129,6 +129,7 @@ public class RequestManager {
                             if (Math.abs(view.getHeight() / (float) view.getWidth() - bitmapHeight / (float) bitmapWidth) >= 0.1) {
                                 LayoutParams params = view.getLayoutParams();
                                 params.height = (int) ((float) view.getWidth() / (float) bitmapWidth * (float) bitmapHeight);
+//                                BLog.d(TAG, "set Height direct " + params.height + ", " + view.getTag());
                                 view.requestLayout();
                             }
                         } else {
@@ -143,6 +144,7 @@ public class RequestManager {
                                         LayoutParams params = view.getLayoutParams();
                                         params.height = (int) ((float) view.getWidth()
                                                 / (float) bitmapWidth * (float) bitmapHeight);
+//                                        BLog.d(TAG, "set Height in viewTree " + params.height + ", " + view.getTag());
                                         view.requestLayout();
                                     }
                                 }

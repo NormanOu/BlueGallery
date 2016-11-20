@@ -28,6 +28,7 @@ public class TagProtocol {
     public static void getTags(String url, Response.Listener<List<TagEntity>> listener, Response.ErrorListener errorListener, Object tag) {
 //        RequestManager.addRequest(new HtmlRequest<>(Request.Method.GET, "http://www.lofter.com/wall", listener, errorListener,
 //                new TagEntityDecoderFake()), tag);
+//        url = "http://www.lofter.com//tag/%E6%97%A5%E7%B3%BB?first=233dcf_cf651cf";
         RequestManager.addRequest(new HtmlRequest<>(Request.Method.GET, url, listener, errorListener,
                 new TagEntityDecoder()), tag);
     }
@@ -65,7 +66,6 @@ public class TagProtocol {
             Document document = Jsoup.parse(html);
 
             Elements itemElements = document.select("textarea[name=js]");
-
             if (itemElements.size() > 0) {
                 String content = itemElements.get(0).html();
 
@@ -75,14 +75,14 @@ public class TagProtocol {
                     e.printStackTrace();
                 }
 
-                BLog.d("BLUE", content);
+//                BLog.d("BLUE", content);
                 Pattern p = Pattern.compile(URL_PREFIX + "(" + URL_PATTEN + ")" + URL_POSTFIX);
                 Matcher m = p.matcher(content);
 
                 while (m.find()) {
                     TagEntity entity = new TagEntity();
                     entity.imgUrl = m.group(1);
-                    BLog.d("BLUE", "url is " + m.group(1));
+//                    BLog.d("BLUE", "url is " + m.group(1));
 
                     entities.add(entity);
                 }

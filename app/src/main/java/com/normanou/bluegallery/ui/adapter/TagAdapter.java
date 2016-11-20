@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -49,13 +50,6 @@ public class TagAdapter extends BaseAdapter {
         mScreenHeight = size.y;
     }
 
-    public void setFocusPosition(int pos) {
-        if (pos != mFocusPos) {
-            mFocusPos = pos;
-            notifyDataSetChanged();
-        }
-    }
-
     public void addData(List<TagEntity> data) {
         mData.addAll(data);
         notifyDataSetChanged();
@@ -89,6 +83,28 @@ public class TagAdapter extends BaseAdapter {
         return position;
     }
 
+    public void updateFocusView(ListView listView, int focusPos) {
+        if (focusPos != mFocusPos) {
+            int count = listView.getChildCount();
+
+            for (int i = 0; i < count; i++) {
+                View childView = listView.getChildAt(i);
+
+                if (childView.getTag() != null) {
+                    Holder holder = (Holder) childView.getTag();
+                    int pos = (Integer) holder.image.getTag();
+                    if (pos == mFocusPos) {
+                        holder.imgCover.setVisibility(View.VISIBLE);
+                    } else if (pos == focusPos) {
+                        holder.imgCover.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+
+            mFocusPos = focusPos;
+        }
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -112,11 +128,11 @@ public class TagAdapter extends BaseAdapter {
                     .loadImage(item.imgUrl, RequestManager
                             .getImageListener(holder.image, mLoadingImageDrawable,
                                     mFailedImageDrawable, true), mScreenWidth / 2, mScreenHeight * 2);
-            holder.image.setTag(position * 2);
+            holder.image.setTag(position);
             holder.title.setText(item.msg);
 
             if (mFocusPos == position) {
-                holder.imgCover.setVisibility(View.GONE);
+                holder.imgCover.setVisibility(View.INVISIBLE);
             } else {
                 holder.imgCover.setVisibility(View.VISIBLE);
             }
