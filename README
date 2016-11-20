@@ -1,4 +1,3 @@
 Known issuse:
 1. some images might return 404
 2. there are two kind of tag pages, now only one kind is supported, so some(a little) tag pages can't be open
-3. tag page might twinkle sometimes (cause by the listview item resize)
