@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">BlueGallery</string>
+
+    <!-- common widget -->
+    <string name="btn_reload">重试</string>
+    <string name="btn_loadmore">加载更多</string>
+
+    <!-- common toast -->
+    <string name="msg_loading_failed">加载失败</string>
+
 </resources>
