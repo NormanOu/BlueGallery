@@ -19,8 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.ImageLoader;
 import com.normanou.bluegallery.BlueApplication;
+import com.normanou.bluegallery.R;
 import com.normanou.bluegallery.util.BLog;
 import com.normanou.bluegallery.util.CacheUtils;
 
@@ -75,23 +75,22 @@ public class RequestManager {
         return mDiskCache.getFileForKey(url);
     }
 
-    public static ImageLoader.ImageContainer loadImage(String requestUrl,
-                                                       ImageLoader.ImageListener imageListener) {
-        return loadImage(requestUrl, imageListener, 0, 0);
+    public static ImageLoader.ImageContainer loadImage(String requestUrl, final ImageView view,
+                                                       final Drawable defaultImageDrawable,
+                                                       final Drawable errorImageDrawable) {
+        return loadImage(requestUrl, view, defaultImageDrawable, errorImageDrawable, false, 0, 0);
     }
 
-    public static ImageLoader.ImageContainer loadImage(String requestUrl,
-                                                       ImageLoader.ImageListener imageListener, int maxWidth, int maxHeight) {
+    public static ImageLoader.ImageContainer loadImage(String requestUrl, final ImageView view,
+                                                       final Drawable defaultImageDrawable,
+                                                       final Drawable errorImageDrawable, final boolean fixScale,
+                                                       int maxWidth, int maxHeight) {
+        view.setTag(R.id.tag_img_url, requestUrl);
+        ImageLoader.ImageListener imageListener = getImageListener(view, defaultImageDrawable, errorImageDrawable, fixScale);
         return mImageLoader.get(requestUrl, imageListener, maxWidth, maxHeight);
     }
 
-    public static ImageLoader.ImageListener getImageListener(
-            final ImageView view, final Drawable defaultImageDrawable,
-            final Drawable errorImageDrawable) {
-        return getImageListener(view, defaultImageDrawable, errorImageDrawable, false);
-    }
-
-    public static ImageLoader.ImageListener getImageListener(
+    private static ImageLoader.ImageListener getImageListener(
             final ImageView view, final Drawable defaultImageDrawable,
             final Drawable errorImageDrawable, final boolean fixScale) {
         return new ImageLoader.ImageListener() {
@@ -106,6 +105,13 @@ public class RequestManager {
             @Override
             public void onResponse(final ImageLoader.ImageContainer response,
                                    boolean isImmediate) {
+                String viewUrl = (String) view.getTag(R.id.tag_img_url);
+                String responesUrl = response.getRequestUrl();
+                if (!isImmediate && !viewUrl.equals(responesUrl)) {
+                    BLog.e(TAG, "onResponse got mismatch response");
+                    return;
+                }
+
                 if (response.getBitmap() != null) {
                     if (!isImmediate && defaultImageDrawable != null) {
                         TransitionDrawable transitionDrawable = new TransitionDrawable(

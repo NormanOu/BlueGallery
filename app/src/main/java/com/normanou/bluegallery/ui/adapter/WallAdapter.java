@@ -104,9 +104,8 @@ public class WallAdapter extends BaseAdapter {
         Pair<WallEntity, WallEntity> item = getItem(position);
         if (item.first != null) {
             holder.imageRequestLeft = RequestManager
-                    .loadImage(item.first.imgUrl, RequestManager
-                            .getImageListener(holder.imageLeft, mLoadingImageDrawable,
-                                    mFailedImageDrawable));
+                    .loadImage(item.first.imgUrl, holder.imageLeft, mLoadingImageDrawable,
+                            mFailedImageDrawable);
             holder.imageLeft.setTag(position * 2);
             holder.imageLeft.setClickable(true);
             holder.titleLeft.setText(item.first.name);
@@ -117,9 +116,8 @@ public class WallAdapter extends BaseAdapter {
 
         if (item.second != null) {
             holder.imageRequestRight = RequestManager
-                    .loadImage(item.second.imgUrl, RequestManager
-                            .getImageListener(holder.imageRight, mLoadingImageDrawable,
-                                    mFailedImageDrawable));
+                    .loadImage(item.second.imgUrl, holder.imageRight, mLoadingImageDrawable,
+                            mFailedImageDrawable);
             holder.imageRight.setTag(position * 2 + 1);
             holder.imageRight.setClickable(true);
             holder.titleRight.setText(item.second.name);

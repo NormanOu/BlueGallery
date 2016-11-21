@@ -125,9 +125,8 @@ public class TagAdapter extends BaseAdapter {
         if (item != null) {
 
             holder.imageRequest = RequestManager
-                    .loadImage(item.imgUrl, RequestManager
-                            .getImageListener(holder.image, mLoadingImageDrawable,
-                                    mFailedImageDrawable, true), mScreenWidth / 2, mScreenHeight * 2);
+                    .loadImage(item.imgUrl, holder.image, mLoadingImageDrawable,
+                            mFailedImageDrawable, true, mScreenWidth / 2, mScreenHeight * 2);
             holder.image.setTag(position);
             holder.title.setText(item.msg);
 
